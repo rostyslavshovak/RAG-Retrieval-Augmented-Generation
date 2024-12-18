@@ -1,0 +1,99 @@
+Project tree structure:
+
+RAG_test/
+├─ rag_script/
+│  ├─ __init__.py
+│  ├─ naive_rag.py
+│  ├─ utils.py
+├─ requirements.txt
+├─ .env
+
+
+
+					                                The response from RAG application from CLI:
+
+
+Question: What position in the company does Jeffrey P. Bezos hold and since when?
+
+Answer: Jeffrey P. Bezos holds the position of President, Chief Executive Officer, and Chairman of the Board at Amazon.com.
+He has been the Chairman of the Board since founding the company in 1994 and has been serving as Chief Executive Officer since May 1996.
+As the Principal Executive Officer of Amazon.com, Mr. Bezos plays a crucial role in the strategic decision-making and overall leadership of the company.
+His extensive experience and innovative vision have been instrumental in Amazon's growth and success in the e-commerce industry.
+
+
+
+Retrieved Chunks:
+Chunk 1:
+(2) The information contained in the Report fairly presents, in all material respects, the financial condition and results of operations of the Company.
+A signed original of this written statement has been provided to the Company and will be retained by the Company and furnished to the SEC or its staff upon
+request.
+  /s/ Jeffrey P. Bezos
+  Jeffrey P. Bezos
+  Chairman and Chief Executive Officer
+  (Principal Executive Officer)
+Date: January 30, 2020
+----------------------------------------
+Chunk 2:
+(b) Any fraud, whether or not material, that involves management or other employees who have a significant role in the registrant’s internal control
+over financial reporting.
+
+  /s/ Jeffrey P. Bezos
+  Jeffrey P. Bezos
+  Chairman and Chief Executive Officer
+  (Principal Executive Officer)
+Date: January 30, 2020
+----------------------------------------
+Chunk 3:
+Information About Our Executive Officers
+Name   Age   Position
+Jeffrey P. Bezos   56   President, Chief Executive Officer, and Chairman of the Board
+Jeffrey M. Blackburn   50   Senior Vice President, Business Development
+Andrew R. Jassy   52   CEO Amazon Web Services
+Brian T. Olsavsky   56   Senior Vice President and Chief Financial Officer
+Shelley L. Reynolds   55   Vice President, Worldwide Controller, and Principal Accounting Officer
+Jeffrey A. Wilke   53   CEO Worldwide Consumer
+David A. Zapolsky   56   Senior Vice President, General Counsel, and Secretary
+Jeffrey P. Bezos. Mr. Bezos has been Chairman of the Board of Amazon.com since founding it in 1994 and Chief Executive Officer since May 1996.
+----------------------------------------
+Chunk 4:
+Signature Title
+
+/s/ Jeffrey P. Bezos
+Jeffrey P. Bezos Chairman of the Board, President, and Chief Executive Officer (Principal Executive
+  Officer)
+
+/s/ Brian T. Olsavsky
+Brian T. Olsavsky   Senior Vice President and Chief Financial Officer (Principal Financial Officer)
+
+/s/ Shelley L. Reynolds
+Shelley L. Reynolds   Vice President, Worldwide Controller (Principal Accounting Officer)
+
+/s/ Rosalind G. Brewer
+Rosalind G. Brewer   Director
+
+/s/ Jamie S. Gorelick
+Jamie S. Gorelick   Director
+
+/s/ Daniel P. Huttenlocher
+Daniel P. Huttenlocher   Director
+
+/s/ Judith A. McGrath
+Judith A. McGrath   Director
+
+/s/ Indra K. Nooyi
+Indra K. Nooyi   Director
+
+/s/ Jonathan J. Rubinstein
+Jonathan J. Rubinstein   Director
+----------------------------------------
+Chunk 5:
+31.1 Certification of Jeffrey P. Bezos, Chairman and Chief Executive Officer of Amazon.com, Inc., pursuant to Rule 13a-14(a) under the Securities
+  Exchange Act of 1934.
+
+31.2 Certification of Brian T. Olsavsky, Senior Vice President and Chief Financial Officer of Amazon.com, Inc., pursuant to Rule 13a-14(a) under the
+  Securities Exchange Act of 1934.
+
+32.1   Certification of Jeffrey P. Bezos, Chairman and Chief Executive Officer of Amazon.com, Inc., pursuant to 18 U.S.C. Section 1350.
+
+32.2   Certification of Brian T. Olsavsky, Senior Vice President and Chief Financial Officer of Amazon.com, Inc., pursuant to 18 U.S.C. Section 1350.
+----------------------------------------
