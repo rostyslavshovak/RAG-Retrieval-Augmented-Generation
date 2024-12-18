@@ -1,12 +1,22 @@
 Project tree structure:
 
-RAG_test/
-├─ rag_script/
-│  ├─ __init__.py
-│  ├─ naive_rag.py
-│  ├─ utils.py
-├─ requirements.txt
-├─ .env
+RAG_QDrant/
+   ├─ rag_script/
+   │  ├─ naive_rag.py
+   │  ├─ utils.py
+   │  └─ __init__.py
+   ├─ Dockerfile
+   ├─ .dockerignore
+   ├─ requirements.txt
+   ├─ example of use.txt
+
+
+Run script steps:
+1. docker pull qdrant/qdrant
+2. docker run -d -p <host_port>:<container_port> <image_name> 
+3. docker run --rm rag_qdrant:latest python -m rag_script.naive_rag --pdf_path "path_to_pdf" --query "Query"
+
+python -m rag_script.naive_rag --pdf_path "path_to_pdf" --query "Question?"
 
 
 
