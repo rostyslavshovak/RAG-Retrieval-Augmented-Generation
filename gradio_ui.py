@@ -1,4 +1,7 @@
+import os
+from dotenv import load_dotenv
 import logging
+import warnings
 import gradio as gr
 from indexing import index_file_in_qdrant
 from inference import answer_query
@@ -7,9 +10,17 @@ from qdrant_client import QdrantClient
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+warnings.filterwarnings('ignore', category=DeprecationWarning)
+
+load_dotenv()
+QDRANT_HOST = os.getenv('HOST')
+QDRANT_PORT = os.getenv('PORT')
+
 #show list of collection names from QDrant
-def list_qdrant_collections(url="http://localhost:6333"):
-    client = QdrantClient(url=url)
+def list_qdrant_collections():
+    qdrant_url = f"http://{QDRANT_HOST}:{QDRANT_PORT}"
+    client = QdrantClient(url=qdrant_url)
+
     collections = client.get_collections()
     collection_names = [c.name for c in collections.collections]
     logger.info(f"Retrieved collections: {collection_names}")
@@ -107,4 +118,4 @@ def build_app():
 
 if __name__ == "__main__":
     app = build_app()
-    app.launch()
+    app.launch(server_name="0.0.0.0", server_port=7860)
