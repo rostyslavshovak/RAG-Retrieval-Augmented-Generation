@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    ports:
+      - "6334:6333"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    restart: unless-stopped
+
+  rag-app:
+    build: .
+    container_name: rag-app
+    ports:
+      - "7860:7860"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - HOST=qdrant
+      - PORT=6333
+      - MODEL_NAME=gpt-3.5-turbo
+      - TEMPERATURE=0.7
+      - MAX_TOKENS=500
+      - EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+    depends_on:
+      - qdrant
+    restart: unless-stopped
+
+volumes:
+  qdrant_storage:

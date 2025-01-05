@@ -45,7 +45,12 @@ def perform_index(pdf_file, coll_name):
 
     # Index the PDF
     msg = index_file_in_qdrant(pdf_file.name, coll_name)
-    return f"Successfully {action} collection '{coll_name}' with '{pdf_file.name}'."
+    new_list = list_qdrant_collections()
+    # return f"Successfully {action} collection '{coll_name}' with '{pdf_file.name}'.", gr.update(choices=new_list, value=coll_name)
+    return (
+        f"Successfully {action} collection '{coll_name}' with '{pdf_file.name}'.",
+        gr.update(choices=new_list, value=coll_name)
+    )
 
 #inference part to get query and retrieve answer
 def chat_fn(user_message, history, selected_coll):
@@ -93,7 +98,7 @@ def build_app():
                 index_btn.click(
                     fn=perform_index,
                     inputs=[pdf_uploader, new_collection],
-                    outputs=index_status
+                    outputs=[index_status, coll_dropdown]
                 )
         with gr.Row():
             with gr.Column(scale=12):

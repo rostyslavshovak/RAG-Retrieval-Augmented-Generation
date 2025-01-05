@@ -47,16 +47,25 @@ def answer_query(user_message: str, history: list, collection_name: str) -> str:
         max_tokens=MAX_TOKENS,
         openai_api_key=OPENAI_API_KEY
     )
-    prompt_template = """You are a helpful assistant. Using the provided context, write a complete, well-structured, and detailed answer to the question. Incorporate any relevant information from the context into your answer. Be direct, accurate, and friendly in tone. Provide dates, positions, and context as necessary.
-            If you do not see relevant information in the context, say you don't have enough information.
+    prompt_template = """You are a knowledgeable assistant with access to user-provided context.Use only the retrieved context below to answer the user’s question or provide guidance.If you do not see relevant details in the context, say so.
 
-            Context:
-            {context}
+    Context:
+    {context}
 
-            Question: {question}
+    Question:
+    {question}
 
-            Answer with precision:
-            """
+    Your answer should be:
+
+    1. Clear and accurate,
+    2. Based entirely on the context,
+    3. Well-structured and thorough.
+    
+
+    If you do not find enough information in the context, respond that you do not have enough information.
+
+    Answer:
+"""
     chain = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
