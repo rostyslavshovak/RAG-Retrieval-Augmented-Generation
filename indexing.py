@@ -4,13 +4,14 @@ import logging
 import pdfplumber
 from langchain_community.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+# from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import Qdrant
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
 
 load_dotenv()
-
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 QDRANT_PORT = os.getenv('PORT')
 QDRANT_HOST = os.getenv('HOST')
 EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL')
@@ -43,13 +44,13 @@ def load_documents_from_pdf(pdf_path):
     return documents
 
 #create qdrant coolection if it not exist
-def create_qdrant_collection(client: QdrantClient, collection_name: str, vector_size: int = 384, distance: str = "Cosine"):
+def create_qdrant_collection(client: QdrantClient, collection_name: str, vector_size: int = 1536, distance: str = "Cosine"):
     try:
         client.get_collection(collection_name)
         logger.info(f"Collection '{collection_name}' already exists.")
     except Exception as e:
         logger.info(f"Creating collection '{collection_name}'...")
-        # Define the distance metric using the Distance enum
+
         distance_metric = Distance.COSINE if distance.lower() == "cosine" else Distance.EUCLID
         client.create_collection(
             collection_name=collection_name,
@@ -73,12 +74,16 @@ def index_file_in_qdrant(pdf_path: str, collection_name: str) -> str:
     chunks = splitter.split_documents(docs)
     logger.info(f"Split into {len(chunks)} chunks.")
 
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+    # embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+    embeddings = OpenAIEmbeddings(
+        model=EMBEDDING_MODEL,
+        openai_api_key=OPENAI_API_KEY
+    )
 
     qdrant_url = f"http://{QDRANT_HOST}:{QDRANT_PORT}"
     client = QdrantClient(url=qdrant_url)
 
-    create_qdrant_collection(client, collection_name, vector_size=384, distance="Cosine")
+    create_qdrant_collection(client, collection_name, vector_size=1536, distance="Cosine")
 
     qdrant_store = Qdrant(
         client=client,

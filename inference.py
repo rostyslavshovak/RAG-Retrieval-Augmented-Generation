@@ -3,7 +3,8 @@ import logging
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from langchain_community.vectorstores import Qdrant
-from langchain_community.embeddings import HuggingFaceEmbeddings
+# from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
@@ -12,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
-
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 MODEL_NAME = os.getenv('MODEL_NAME')
 TEMPERATURE = os.getenv('TEMPERATURE')
 MAX_TOKENS = os.getenv('MAX_TOKENS')
@@ -24,7 +25,13 @@ def answer_query(user_message: str, history: list, collection_name: str) -> str:
     if not collection_name or not collection_name.strip():
         return "No Qdrant collection selected."
 
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+
+    # embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+    embeddings = OpenAIEmbeddings(
+        model=EMBEDDING_MODEL,
+        openai_api_key=OPENAI_API_KEY
+    )
+
 
     qdrant_url = f"http://{QDRANT_HOST}:{QDRANT_PORT}"
     client = QdrantClient(url=qdrant_url)
@@ -37,9 +44,6 @@ def answer_query(user_message: str, history: list, collection_name: str) -> str:
     )
     retriever = vectorstore.as_retriever(search_kwargs={"k": 6, "score_threshold": 0.5})
 
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    if not OPENAI_API_KEY:
-        raise ValueError("OPENAI_API_KEY is not set in environment or .env")
 
     llm = ChatOpenAI(
         model_name=MODEL_NAME,

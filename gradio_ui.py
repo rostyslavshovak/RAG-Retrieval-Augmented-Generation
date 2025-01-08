@@ -27,13 +27,20 @@ def list_qdrant_collections():
     return collection_names
 
 def on_refresh_collections():
-    return gr.update(choices=list_qdrant_collections())
+    updated_collections = list_qdrant_collections()
+    logger.info(f"Refreshing collections: {updated_collections}")
+    if updated_collections:
+        return gr.update(choices=updated_collections, value=updated_collections[0])
+    else:
+        return gr.update(choices=[], value=None)
 
 def perform_index(pdf_file, coll_name):
     if not pdf_file:
-        return "No PDF selected."
+        return ("No PDF selected.", gr.update())
+
     if not coll_name or not coll_name.strip():
-        return "Collection name must be provided."
+        return ("Collection name must be provided.", gr.update())
+
     # Check if collection exists
     existing_collections = list_qdrant_collections()
     if coll_name in existing_collections:
@@ -43,14 +50,12 @@ def perform_index(pdf_file, coll_name):
         action = "creating and indexing into"
         logger.info(f"Creating and indexing into new collection '{coll_name}'.")
 
-    # Index the PDF
-    msg = index_file_in_qdrant(pdf_file.name, coll_name)
+    msg = index_file_in_qdrant(pdf_file.name, coll_name)        #index PDF file
     new_list = list_qdrant_collections()
-    # return f"Successfully {action} collection '{coll_name}' with '{pdf_file.name}'.", gr.update(choices=new_list, value=coll_name)
-    return (
-        f"Successfully {action} collection '{coll_name}' with '{pdf_file.name}'.",
-        gr.update(choices=new_list, value=coll_name)
-    )
+
+    #update list of collections and in return choose the created collection
+    logger.info(f"Updated collections after indexing: {new_list}")
+    return f"Successfully {action} collection '{coll_name}'.", gr.update(choices=new_list, value=coll_name)
 
 #inference part to get query and retrieve answer
 def chat_fn(user_message, history, selected_coll):
@@ -62,14 +67,24 @@ def chat_fn(user_message, history, selected_coll):
         logger.exception("Chat error:")
         return f"Error: {e}"
 
+def respond(message, history, selected_coll):
+    logger.info(f"Received message: {message}")
+    logger.info(f"Current history: {history}")
+    logger.info(f"Selected collection: {selected_coll}")
+
+    response = chat_fn(message, history, selected_coll)
+
+    updated_history = history + [[message, response]]
+    return updated_history, updated_history
+
 def build_app():
     with gr.Blocks(title="RAG Demo") as demo:
-        gr.Markdown("# RAG application\nSelect or create a collection(index a PDF in left column), then ask questions in RAG Chatbot.")
+        gr.Markdown("# RAG application\nSelect or create a collection (index a PDF in left column), then ask questions in RAG Chatbot.")
 
         with gr.Row():
-            # QDrant Interface
+            #QDrant Interface
             with gr.Column():
-                gr.Markdown("### List of QDrant collection")
+                gr.Markdown("## List of QDrant collection")
 
                 init_collections = list_qdrant_collections()
 
@@ -80,7 +95,7 @@ def build_app():
                     value=init_collections[0] if init_collections else None,
                     interactive=True
                 )
-                refresh_btn = gr.Button("Refresh Collections")   #button to refresh collections list
+                refresh_btn = gr.Button("Refresh Collections")  #button to refresh collections list
 
                 refresh_btn.click(
                     fn=on_refresh_collections,
@@ -88,36 +103,51 @@ def build_app():
                 )
             #index part
             with gr.Column():
-                gr.Markdown("### Index a new PDF")
+                gr.Markdown("## Index a new PDF")
                 pdf_uploader = gr.File(file_types=[".pdf", ".docx"], label="PDF File")
                 new_collection = gr.Textbox(label="Create new or change existing collection")
                 index_btn = gr.Button("Index PDF")
                 index_status = gr.Markdown()
 
-                # Indexing action
+                #Indexing action and update dropdown
                 index_btn.click(
                     fn=perform_index,
                     inputs=[pdf_uploader, new_collection],
-                    outputs=[index_status, coll_dropdown]
+                    outputs=[index_status, coll_dropdown],
+                    queue=False
                 )
         with gr.Row():
             with gr.Column(scale=12):
-                # gr.Markdown("### RAG Chatbot")
+                gr.Markdown("## RAG Chatbot")
 
-                # Chat interface
-                def chat_wrapper(msg, hist):
-                    return chat_fn(msg, hist, coll_dropdown.value)
+                chatbot = gr.Chatbot(label="RAG Chatbot")
+                message_input = gr.Textbox(
+                    placeholder="Type your message here...",
+                    label="Your Message",
+                    lines=1
+                )
+                submit_btn = gr.Button("Send")
 
-                example_questions = [
-                    "What position in the company does Jeffrey P. Bezos hold and since when?",
-                    "When was the company founded?"
-                ]
-                chatbot = gr.ChatInterface(
-                    fn=chat_wrapper,
-                    type="messages",
-                    examples=example_questions,
-                    title="RAG Chatbot",
-                    description="Choose your QDrant collection or create a new one on the right."
+                state = gr.State([])    #keep history of conversation
+
+                submit_btn.click(
+                    fn=respond,
+                    inputs=[message_input, state, coll_dropdown],
+                    outputs=[chatbot, state],
+                )
+
+                message_input.submit(           #allow to send message by pressing Enter
+                    fn=respond,
+                    inputs=[message_input, state, coll_dropdown],
+                    outputs=[chatbot, state],
+                )
+                gr.Examples(
+                    examples=[
+                        "What was Amazon’s net cash provided by operating activities in 2019?",
+                        "When was Amazon founded?"
+                    ],
+                    inputs=[message_input],
+                    label="Example Questions"
                 )
     return demo
 
