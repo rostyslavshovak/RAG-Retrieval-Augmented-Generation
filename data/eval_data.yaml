@@ -1,0 +1,59 @@
+- user_input: "What was Amazon’s net sales for 2019?"
+  expected_response: "Amazon’s net sales in 2019 were approximately $280.5 billion."
+
+- user_input: "How many employees did Amazon have at the end of 2019?"
+  expected_response: "Amazon had about 798,000 employees as of December 31, 2019."
+
+- user_input: "When was Amazon founded?"
+  expected_response: "Amazon was founded in 1994."
+
+- user_input: "What was Amazon’s net income in 2019?"
+  expected_response: "Amazon’s net income in 2019 was about $11.6 billion."
+
+- user_input: "How much did Amazon spend on technology and content (R&D) in 2019?"
+  expected_response: "Amazon’s technology and content expenses were around $35.9 billion in 2019."
+
+- user_input: "What was Amazon’s total long-term debt at the end of 2019?"
+  expected_response: "As of December 31, 2019, Amazon reported approximately $23.4 billion in long-term debt."
+
+- user_input: "What were Amazon's total operating expenses in 2019?"
+  expected_response: "Operating expenses, including cost of sales, were roughly $265 billion in 2019."
+
+- user_input: "Which segments contributed most to Amazon’s net sales in 2019?"
+  expected_response: "Online stores, physical stores, third-party seller services, subscription services, AWS, and other revenue streams contributed to Amazon’s net sales in 2019, with online stores and AWS being key segments."
+
+- user_input: "How did Amazon’s stock price trend from mid-2019 to the end of 2019?"
+  expected_response: "Amazon’s stock price rose overall during the second half of 2019, although it fluctuated with market conditions."
+
+- user_input: "What portion of net sales were from AWS in 2019?"
+  expected_response: "AWS accounted for approximately 12% of Amazon’s total net sales in 2019."
+
+- user_input: "What are Amazon’s primary revenue streams?"
+  expected_response: "Amazon’s revenue primarily comes from online stores, third-party seller services, AWS, subscription services, and physical stores."
+
+- user_input: "What was Amazon’s net cash provided by operating activities in 2019?"
+  expected_response: "Net cash provided by operating activities in 2019 was around $38.5 billion."
+
+- user_input: "How much did Amazon spend on marketing in 2019?"
+  expected_response: "Marketing expenses for 2019 were included in 'Sales and marketing' which totaled over $18 billion."
+
+- user_input: "What is Amazon’s current ratio around the end of 2019?"
+  expected_response: "Amazon’s current ratio hovered around 1.10 at the end of 2019."
+
+- user_input: "What kind of assets does Amazon report as major?"
+  expected_response: "Amazon’s major assets include cash and cash equivalents, marketable securities, inventories, property and equipment, and acquired intangibles."
+
+- user_input: "What was Amazon’s return on assets (ROA) in 2019?"
+  expected_response: "Amazon’s ROA in 2019 was around 5.0%, based on net income and average total assets."
+
+- user_input: "How much inventory did Amazon carry at the end of 2019?"
+  expected_response: "Amazon’s inventories were about $20.5 billion at year-end 2019."
+
+- user_input: "What was Amazon’s gross profit in 2019?"
+  expected_response: "Amazon’s gross profit, which is net sales minus cost of sales, was roughly $93 billion in 2019."
+
+- user_input: "What are Amazon’s main long-term liabilities?"
+  expected_response: "They include long-term debt, operating lease liabilities, and other obligations."
+
+- user_input: "How did Amazon’s operating income (EBIT) change from 2018 to 2019?"
+  expected_response: "Operating income increased from about $12.4 billion in 2018 to approximately $14.5 billion in 2019."
