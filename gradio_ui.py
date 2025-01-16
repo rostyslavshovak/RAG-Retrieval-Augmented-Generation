@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import logging
 import warnings
 import gradio as gr
+
 from indexing import index_file_in_qdrant
 from inference import answer_query
 from qdrant_client import QdrantClient
@@ -16,25 +17,29 @@ load_dotenv()
 QDRANT_HOST = os.getenv('HOST')
 QDRANT_PORT = os.getenv('PORT')
 
-#show list of collection names from QDrant
 def list_qdrant_collections():
     qdrant_url = f"http://{QDRANT_HOST}:{QDRANT_PORT}"
     client = QdrantClient(url=qdrant_url)
-
     collections = client.get_collections()
     collection_names = [c.name for c in collections.collections]
     logger.info(f"Retrieved collections: {collection_names}")
     return collection_names
 
 def on_refresh_collections():
-    return gr.update(choices=list_qdrant_collections())
+    updated_collections = list_qdrant_collections()
+    logger.info(f"Refreshing collections: {updated_collections}")
+    if updated_collections:
+        return gr.update(choices=updated_collections, value=updated_collections[0])
+    else:
+        return gr.update(choices=[], value=None)
 
 def perform_index(pdf_file, coll_name):
     if not pdf_file:
-        return "No PDF selected."
+        return ("No PDF selected.", gr.update())
+
     if not coll_name or not coll_name.strip():
-        return "Collection name must be provided."
-    # Check if collection exists
+        return ("Collection name must be provided.", gr.update())
+
     existing_collections = list_qdrant_collections()
     if coll_name in existing_collections:
         action = "adding to"
@@ -43,77 +48,118 @@ def perform_index(pdf_file, coll_name):
         action = "creating and indexing into"
         logger.info(f"Creating and indexing into new collection '{coll_name}'.")
 
-    # Index the PDF
     msg = index_file_in_qdrant(pdf_file.name, coll_name)
-    return f"Successfully {action} collection '{coll_name}' with '{pdf_file.name}'."
+    new_list = list_qdrant_collections()
+    logger.info(f"Updated collections after indexing: {new_list}")
 
-#inference part to get query and retrieve answer
+    return f"Successfully {action} collection '{coll_name}'.", gr.update(choices=new_list, value=coll_name)
+
 def chat_fn(user_message, history, selected_coll):
+    """
+    Called on each new user message.
+    'history' is a list of dicts, e.g. [ {"role":"user","content":...}, {"role":"assistant","content":...} ].
+    Returns the LLM answer + merged chunks.
+    """
     try:
         if not selected_coll:
-            return "Please select a collection."
-        return answer_query(user_message, history, selected_coll)
+            return "Please select a collection.", ""
+        ans, retrieved_text = answer_query(user_message, history, selected_coll)
+        return ans, retrieved_text
     except Exception as e:
         logger.exception("Chat error:")
-        return f"Error: {e}"
+        return f"Error: {e}", ""
+
+def respond(message, history, selected_coll):
+    logger.info(f"Received message: {message}")
+    logger.info(f"Current history: {history}")
+    logger.info(f"Selected collection: {selected_coll}")
+
+    history = history + [{"role": "user", "content": message}]
+
+    llm_answer, retrieved_text = chat_fn(message, history, selected_coll)
+
+    updated_history = history + [{"role": "assistant", "content": llm_answer}]
+
+    return updated_history, updated_history, retrieved_text
 
 def build_app():
+    retrieved_chunks_box = gr.Textbox(
+        label="Retrieved & Merged Context",
+        lines=20,
+        interactive=False,
+        placeholder="Retrieved context will appear here after each question."
+    )
+
     with gr.Blocks(title="RAG Demo") as demo:
-        gr.Markdown("# RAG application\nSelect or create a collection(index a PDF in left column), then ask questions in RAG Chatbot.")
+        gr.Markdown("# RAG Application\n")
+        gr.Markdown("Select or create a collection in the left column, then ask questions in the Chatbot tab.\n")
 
         with gr.Row():
-            # QDrant Interface
             with gr.Column():
-                gr.Markdown("### List of QDrant collection")
-
+                gr.Markdown("## QDrant Collections")
                 init_collections = list_qdrant_collections()
-
-                #selecting collections
                 coll_dropdown = gr.Dropdown(
                     choices=init_collections,
                     label="Select Qdrant Collection",
                     value=init_collections[0] if init_collections else None,
                     interactive=True
                 )
-                refresh_btn = gr.Button("Refresh Collections")   #button to refresh collections list
-
+                refresh_btn = gr.Button("Refresh Collections")
                 refresh_btn.click(
                     fn=on_refresh_collections,
                     outputs=coll_dropdown
                 )
-            #index part
+
             with gr.Column():
-                gr.Markdown("### Index a new PDF")
+                gr.Markdown("## Index a new PDF")
                 pdf_uploader = gr.File(file_types=[".pdf", ".docx"], label="PDF File")
-                new_collection = gr.Textbox(label="Create new or change existing collection")
+                new_collection = gr.Textbox(label="Create or enter an existing collection")
                 index_btn = gr.Button("Index PDF")
                 index_status = gr.Markdown()
 
-                # Indexing action
                 index_btn.click(
                     fn=perform_index,
                     inputs=[pdf_uploader, new_collection],
-                    outputs=index_status
+                    outputs=[index_status, coll_dropdown],
+                    queue=False
                 )
-        with gr.Row():
-            with gr.Column(scale=12):
-                # gr.Markdown("### RAG Chatbot")
 
-                # Chat interface
-                def chat_wrapper(msg, hist):
-                    return chat_fn(msg, hist, coll_dropdown.value)
+        with gr.Tab("Chatbot"):
+            chatbot = gr.Chatbot(label="RAG Chatbot", type="messages")
+            message_input = gr.Textbox(
+                placeholder="Type your message here...",
+                label="Your Message",
+                lines=1
+            )
+            submit_btn = gr.Button("Send")
 
-                example_questions = [
-                    "What position in the company does Jeffrey P. Bezos hold and since when?",
-                    "When was the company founded?"
-                ]
-                chatbot = gr.ChatInterface(
-                    fn=chat_wrapper,
-                    type="messages",
-                    examples=example_questions,
-                    title="RAG Chatbot",
-                    description="Choose your QDrant collection or create a new one on the right."
-                )
+            # Keep conversation as a list of dicts: e.g. [{"role":"user","content":"..."}, ...]
+            state = gr.State([])
+
+            submit_btn.click(
+                fn=respond,
+                inputs=[message_input, state, coll_dropdown],
+                outputs=[chatbot, state, retrieved_chunks_box],
+            )
+            message_input.submit(
+                fn=respond,
+                inputs=[message_input, state, coll_dropdown],
+                outputs=[chatbot, state, retrieved_chunks_box],
+            )
+
+            gr.Examples(
+                examples=[
+                    "What was Amazon’s net cash provided by operating activities in 2019?",
+                    "When was Amazon founded?"
+                ],
+                inputs=[message_input],
+                label="Example Questions"
+            )
+
+        with gr.Tab("Retrieved Chunks"):
+            gr.Markdown("### Merged Chunks for the Latest Question")
+            retrieved_chunks_box.render()
+
     return demo
 
 if __name__ == "__main__":
