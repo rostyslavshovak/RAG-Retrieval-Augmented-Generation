@@ -3,10 +3,10 @@ from dotenv import load_dotenv
 import logging
 import warnings
 import gradio as gr
-
-from indexing import index_file_in_qdrant
-from inference import answer_query
 from qdrant_client import QdrantClient
+
+from src.indexing import index_file_in_qdrant
+from src.inference import answer_query
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -18,12 +18,8 @@ QDRANT_HOST = os.getenv('HOST')
 QDRANT_PORT = os.getenv('PORT')
 
 def list_qdrant_collections():
-    qdrant_url = f"http://{QDRANT_HOST}:{QDRANT_PORT}"
-    client = QdrantClient(url=qdrant_url)
-    collections = client.get_collections()
-    collection_names = [c.name for c in collections.collections]
-    logger.info(f"Retrieved collections: {collection_names}")
-    return collection_names
+    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
+    return [c.name for c in client.get_collections().collections]
 
 def on_refresh_collections():
     updated_collections = list_qdrant_collections()
@@ -57,7 +53,7 @@ def perform_index(pdf_file, coll_name):
 def chat_fn(user_message, history, selected_coll):
     """
     Called on each new user message.
-    'history' is a list of dicts, e.g. [ {"role":"user","content":...}, {"role":"assistant","content":...} ].
+    'history' is a list of dicts ( [ {"role":"user","content":...}, {"role":"assistant","content":...} ] ).
     Returns the LLM answer + merged chunks.
     """
     try:
@@ -90,7 +86,7 @@ def build_app():
         placeholder="Retrieved context will appear here after each question."
     )
 
-    with gr.Blocks(title="RAG Demo") as demo:
+    with gr.Blocks(title="RAG Chatbot") as demo:
         gr.Markdown("# RAG Application\n")
         gr.Markdown("Select or create a collection in the left column, then ask questions in the Chatbot tab.\n")
 
@@ -164,4 +160,4 @@ def build_app():
 
 if __name__ == "__main__":
     app = build_app()
-    app.launch(server_name="0.0.0.0", server_port=7860)
+    app.launch(server_name="0.0.0.0", server_port=7861)

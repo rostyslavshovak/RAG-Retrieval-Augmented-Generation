@@ -12,13 +12,13 @@ from ragas.metrics import (
     LLMContextRecall,
 )
 
-from inference import answer_query
+from src.inference import answer_query
 import dotenv
 dotenv.load_dotenv()
 RAGAS_APP_TOKEN = os.getenv("RAGAS_APP_TOKEN")
 
 def main():
-    data_file = os.path.join("data", "eval_data.yaml")
+    data_file = os.path.join("../data", "eval_data.yaml")
     with open(data_file, "r", encoding="utf-8") as f:
         qa_list = yaml.safe_load(f)
 

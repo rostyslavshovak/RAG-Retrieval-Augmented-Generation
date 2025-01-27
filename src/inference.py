@@ -19,6 +19,29 @@ EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL')
 QDRANT_PORT = os.getenv('PORT')
 QDRANT_HOST = os.getenv('HOST')
 
+PROMPT_TEMPLATE = """<instructions>
+You are a knowledgeable assistant with access to user-provided context.
+Use only the retrieved context below to answer the user’s question or provide guidance.
+Cite relevant sections from context. Do not add info that is not in the context.
+If the question is requiring a calculation, provide the final answer. Do not invent numbers.
+If you do not see relevant details in the context, say "I do not see that information in the context".
+</instructions>
+
+<context>
+{context}
+</context>
+
+<conversation_history>
+{chat_history}
+</conversation_history>
+
+<question>
+{question}
+</question>
+
+<answer>
+"""
+
 def merge_chunks(docs):
     from collections import defaultdict
     page_map = defaultdict(list)
@@ -41,9 +64,7 @@ def answer_query(user_message: str, history: list, collection_name: str):
         model=EMBEDDING_MODEL,
         openai_api_key=OPENAI_API_KEY
     )
-
-    qdrant_url = f"http://{QDRANT_HOST}:{QDRANT_PORT}"
-    client = QdrantClient(url=qdrant_url)
+    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     vectorstore = Qdrant(
         client=client,
@@ -67,28 +88,7 @@ def answer_query(user_message: str, history: list, collection_name: str):
 
     chat_history_text = "\n".join(conversation_so_far)
 
-    prompt_template = """<instructions>
-    You are a knowledgeable assistant with access to user-provided context.
-    Use only the retrieved context below to answer the user’s question or provide guidance.
-    Cite relevant sections from context. Do not add info that is not in the context.
-    If you do not see relevant details in the context, say "I you do not see that information in the context".
-    </instructions>
-    
-    <context>
-    {context}
-    </context>
-    
-    <conversation_history>
-    {chat_history}
-    </conversation_history>
-    
-    <question>
-    {question}
-    </question>
-    
-    <answer>
-    """
-    prompt = prompt_template.format(
+    prompt = PROMPT_TEMPLATE.format(
         context=merged_content,
         chat_history=chat_history_text,
         question=user_message

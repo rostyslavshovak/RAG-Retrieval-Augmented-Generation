@@ -7,7 +7,6 @@ services:
       - "6333:6333"
     volumes:
       - qdrant_storage:/qdrant/storage
-    restart: unless-stopped
 
   rag-app:
     build: .
@@ -24,7 +23,6 @@ services:
       - EMBEDDING_MODEL=text-embedding-ada-002
     depends_on:
       - qdrant
-    restart: unless-stopped
 
 volumes:
   qdrant_storage:

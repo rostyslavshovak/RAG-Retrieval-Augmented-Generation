@@ -3,12 +3,12 @@ from dotenv import load_dotenv
 import logging
 import pdfplumber
 from langchain_community.docstore.document import Document
-
-from langchain.text_splitter import NLTKTextSplitter
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
-
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import Qdrant
+
+# from langchain.text_splitter import NLTKTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
 
@@ -20,6 +20,13 @@ EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL')
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+CHUNK_SPLITTER_CONFIG = {
+    "chunk_size": 1200,
+    "chunk_overlap": 240,
+    "separators": ["\n\n## ", "\n\n• ", "\n\n", "\n", ". "]
+}
 
 def load_documents_from_pdf(pdf_path):
     def extract_tables_as_text(pdf_page):
@@ -73,12 +80,8 @@ def index_file_in_qdrant(pdf_path: str, collection_name: str) -> str:
 
     docs = load_documents_from_pdf(pdf_path)
 
-    splitter = NLTKTextSplitter(
-        chunk_size=10,
-        chunk_overlap=3
-    )
     #char-based approach:
-    # splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=200)
+    splitter = RecursiveCharacterTextSplitter(**CHUNK_SPLITTER_CONFIG)
 
     chunks = splitter.split_documents(docs)
     logger.info(f"Split into {len(chunks)} chunks.")
@@ -88,8 +91,7 @@ def index_file_in_qdrant(pdf_path: str, collection_name: str) -> str:
         openai_api_key=OPENAI_API_KEY
     )
 
-    qdrant_url = f"http://{QDRANT_HOST}:{QDRANT_PORT}"
-    client = QdrantClient(url=qdrant_url)
+    client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     create_qdrant_collection(client, collection_name, vector_size=1536, distance="Cosine")
 
