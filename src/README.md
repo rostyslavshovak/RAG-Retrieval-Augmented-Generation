@@ -27,6 +27,8 @@ A **higher** score is better. For instance, an *Answer Correctness* of ~0.69 mea
     ```
 3. Inspect the console output for a summary of each metric’s average score.  
 4. (Optional) If you have `RAGAS_APP_TOKEN` set, results can be uploaded to the RAGAS Dashboard interface for centralized tracking.
+     - You may find evaluation results for our dataset in RAGAS Dashboard by this [link](https://app.ragas.io/public-shared/alignment/evaluation/a44ac9ac-92ed-4389-b3f1-b3850a0aabf2).
+
 
    
 ### Hypothesis Testing
