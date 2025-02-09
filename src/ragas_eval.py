@@ -6,7 +6,7 @@ from ragas import EvaluationDataset
 from pathlib import Path
 from ragas.metrics import AnswerRelevancy, AnswerCorrectness, FactualCorrectness, Faithfulness, LLMContextRecall
 from inference import answer_query
-import openpyxl
+# import openpyxl   #uncomment this to save the results in Excel format
 
 import dotenv
 dotenv.load_dotenv()
