@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-import logging
 import pdfplumber
 from langchain_community.docstore.document import Document
 from langchain_community.embeddings import OpenAIEmbeddings
@@ -8,23 +7,21 @@ from langchain_community.vectorstores import Qdrant
 # from langchain.text_splitter import RecursiveCharacterTextSplitter
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
-
-import nltk
 from typing import List
+import nltk
 
 #Download the punkt tokenizer (if not already downloaded)
 nltk.download('punkt', quiet=True)
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 QDRANT_PORT = os.getenv('PORT')
 QDRANT_HOST = os.getenv('HOST')
 EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL')
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 
 # CHUNK_SPLITTER_CONFIG = {
 #     "chunk_size": 1200,

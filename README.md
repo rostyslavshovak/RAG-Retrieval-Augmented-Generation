@@ -20,23 +20,36 @@ Through a Docker-based setup, the app hosts a **Gradio** UI that allows you to u
 
 ## Features
 1. **Document Ingestion**: Upload PDFs files, which are then split and embedded via `OpenAIEmbeddings`.
+
 2. **Vector Store with QDrant**: Indexed documents are stored in QDrant collections, enabling fast semantic search.
+
 3. **Gradio UI**: A user-friendly chat interface for:
    - Selecting or creating Qdrant collections.
    - Asking questions with real-time references to the source text.
    - Displays retrieved chunks so users can verify the source of each answer.
+
 4. **RAGAS Evaluation**: An optional script (`ragas_eval.py`) measures the chatbot’s performance using metrics like: answer relevance, correctness, factual correctness, faithfulness, and context recall.
+
 5. **Docker & Docker Compose**  
    - Spin up the entire system (QDrant + app) via Docker for consistent environment setups.
+
 6. **RAGAS** (Retrieval-Augmented Generation Assessment Score) provides a suite of metrics to evaluate the chatbot’s performance.
    - For details on the RAGAS evaluation methodology and results, see the README in src.
-7. **Auto-merging Retrieval**:  
+
+7. **Sentence-Window Retrieval**:  
+   - **What It Does**: Splits documents into overlapping windows based on sentences rather than arbitrary chunks.  
+   - **Benefits**: This method preserves the natural flow and context of the text, ensuring that nuanced details across sentence boundaries are maintained. This results in more semantically relevant retrievals, especially for complex financial documents where context spans multiple sentences.
+
+8. **Auto-merging Retrieval**:  
    - **What It Does**: Automatically combines adjacent or related retrieved text chunks into a single, coherent passage.  
    - **Benefits**: By merging fragmented pieces of context, the system delivers clearer and more unified information to the language model, reducing the risk of disjointed responses and improving overall answer clarity.
-8. **Chat Memory Features**:  
+
+9. **Chat Memory Features**:  
    - **What It Does**: Maintains conversation history across multiple interactions within a session.  
    - **Benefits**: This feature allows the chatbot to reference previous messages, ensuring that follow-up questions are answered with an awareness of the ongoing dialogue. The result is a more coherent, contextually aware conversation that can handle multi-turn queries seamlessly.
 
+10. Pytest Unit Tests:  
+    - Ensures that the core functionalities of the chatbot, including document indexing, retrieval, and answer generation, are working as expected.
 
 
 

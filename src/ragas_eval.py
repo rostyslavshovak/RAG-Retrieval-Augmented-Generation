@@ -65,13 +65,14 @@ def main():
     print("RAGAS results can be viewed at \n:")
     print(upload_result)
 
-    metrics_df = result.to_pandas()
-
-    combined_df = pd.concat([df.reset_index(drop=True), metrics_df.reset_index(drop=True)], axis=1)
-
-    excel_file = "evaluation.xlsx"
-    combined_df.to_excel(excel_file, index=False)
-    print(f"Combined evaluation results saved to '{excel_file}'.")
+    #optional: save the evaluation results to an Excel file
+    # metrics_df = result.to_pandas()
+    #
+    # combined_df = pd.concat([df.reset_index(drop=True), metrics_df.reset_index(drop=True)], axis=1)
+    #
+    # excel_file = "evaluation.xlsx"
+    # combined_df.to_excel(excel_file, index=False)
+    # print(f"Combined evaluation results saved to '{excel_file}'.")
 
 if __name__ == "__main__":
     main()
