@@ -9,6 +9,6 @@ RUN python -m nltk.downloader punkt_tab
 
 COPY src/ /app/src/
 
-EXPOSE 7860
+EXPOSE 7861
 
-CMD ["python", "-m", "src.gradio_ui.py"]
+CMD ["python", "-m", "src.gradio_ui"]

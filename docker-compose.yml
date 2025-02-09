@@ -4,13 +4,13 @@ services:
     image: qdrant/qdrant:latest
     container_name: qdrant
     ports:
-      - "6333:6333"
+      - "6334:6333"
     volumes:
       - qdrant_storage:/qdrant/storage
 
   rag-app:
     build: .
-    container_name: rag-app
+    container_name: rag-chatbot
     ports:
       - "7860:7860"
     environment:
