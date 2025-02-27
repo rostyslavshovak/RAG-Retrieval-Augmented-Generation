@@ -1,16 +1,21 @@
 import os
 from dotenv import load_dotenv
-import logging
 import pdfplumber
 from langchain_community.docstore.document import Document
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import Qdrant
-
-# from langchain.text_splitter import NLTKTextSplitter
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-
+# from langchain.text_splitter import RecursiveCharacterTextSplitter
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
+from typing import List
+import nltk
+
+#Download the punkt tokenizer (if not already downloaded)
+nltk.download('punkt', quiet=True)
+
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -18,15 +23,45 @@ QDRANT_PORT = os.getenv('PORT')
 QDRANT_HOST = os.getenv('HOST')
 EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL')
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# CHUNK_SPLITTER_CONFIG = {
+#     "chunk_size": 1200,
+#     "chunk_overlap": 240,
+#     "separators": ["\n\n## ", "\n\n• ", "\n\n", "\n", ". "]
+# }
 
-
-CHUNK_SPLITTER_CONFIG = {
-    "chunk_size": 1200,
-    "chunk_overlap": 240,
-    "separators": ["\n\n## ", "\n\n• ", "\n\n", "\n", ". "]
+TEXT_SPLITTER_CONFIG = {
+        "chunk_size": 10,
+        "chunk_overlap": 3
 }
+
+class SentenceWindowTextSplitter:
+    def __init__(self, chunk_size: int = 10, chunk_overlap: int = 3):
+        if chunk_overlap >= chunk_size:
+            raise ValueError("chunk_overlap must be smaller than chunk_size")
+        self.chunk_size = chunk_size
+        self.chunk_overlap = chunk_overlap
+
+    def split_text(self, text: str) -> List[str]:
+        sentences = nltk.sent_tokenize(text)
+        chunks = []
+        index = 0
+        while index < len(sentences):
+            #Create a window of sentences
+            window = sentences[index: index + self.chunk_size]
+            #Join the sentences to form a text chunk
+            chunk = " ".join(window)
+            chunks.append(chunk)
+            index += (self.chunk_size - self.chunk_overlap)
+        return chunks
+
+    def split_documents(self, documents: List[Document]) -> List[Document]:
+        new_documents = []
+        for doc in documents:
+            splits = self.split_text(doc.page_content)
+            for split in splits:
+                new_doc = Document(page_content=split, metadata=doc.metadata)
+                new_documents.append(new_doc)
+        return new_documents
 
 def load_documents_from_pdf(pdf_path):
     def extract_tables_as_text(pdf_page):
@@ -81,10 +116,14 @@ def index_file_in_qdrant(pdf_path: str, collection_name: str) -> str:
     docs = load_documents_from_pdf(pdf_path)
 
     #char-based approach:
-    splitter = RecursiveCharacterTextSplitter(**CHUNK_SPLITTER_CONFIG)
+    # splitter = RecursiveCharacterTextSplitter(**CHUNK_SPLITTER_CONFIG)
+    # chunks = splitter.split_documents(docs)
+    # logger.info(f"Split into {len(chunks)} chunks.")
 
+    splitter = SentenceWindowTextSplitter(**TEXT_SPLITTER_CONFIG)
     chunks = splitter.split_documents(docs)
-    logger.info(f"Split into {len(chunks)} chunks.")
+    logger.info(f"Split into {len(chunks)} chunks using sentence-window retrieval.")
+
 
     embeddings = OpenAIEmbeddings(
         model=EMBEDDING_MODEL,
