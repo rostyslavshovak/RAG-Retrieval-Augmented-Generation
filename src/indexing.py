@@ -30,8 +30,8 @@ EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL')
 # }
 
 TEXT_SPLITTER_CONFIG = {
-        "chunk_size": 10,
-        "chunk_overlap": 3
+        "chunk_size": 12,
+        "chunk_overlap": 6
 }
 
 class SentenceWindowTextSplitter:
@@ -58,8 +58,10 @@ class SentenceWindowTextSplitter:
         new_documents = []
         for doc in documents:
             splits = self.split_text(doc.page_content)
-            for split in splits:
-                new_doc = Document(page_content=split, metadata=doc.metadata)
+            # Add a chunk index to metadata for later ordering
+            for i, split in enumerate(splits):
+                new_metadata = {**doc.metadata, "chunk_index": i}
+                new_doc = Document(page_content=split, metadata=new_metadata)
                 new_documents.append(new_doc)
         return new_documents
 
