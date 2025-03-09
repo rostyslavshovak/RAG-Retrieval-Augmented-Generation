@@ -63,6 +63,8 @@ def chat_fn(user_message, history, selected_coll):
         return ans, retrieved_text
     except Exception as e:
         logger.exception("Chat error:")
+        if "connection" in str(e).lower():
+            return "Error: Could not connect to the vector database. Please check your connection.", ""
         return f"Error: {e}", ""
 
 def respond(message, history, selected_coll):
@@ -145,7 +147,7 @@ def build_app():
 
             gr.Examples(
                 examples=[
-                    "What was Amazon’s net cash provided by operating activities in 2019?",
+                    "What was Amazon's net cash provided by operating activities in 2019?",
                     "When was Amazon founded?"
                 ],
                 inputs=[message_input],

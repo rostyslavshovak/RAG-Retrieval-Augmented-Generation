@@ -30,7 +30,7 @@ def main():
         answer, retrieved_context = answer_query(
             item["user_input"],
             history=[],
-            collection_name="text_spitter"
+            collection_name="amazon_collection"
         )
         test_samples.append({
             "user_input": user_input,
@@ -65,14 +65,15 @@ def main():
     print("RAGAS results can be viewed at \n:")
     print(upload_result)
 
-    #optional: save the evaluation results to an Excel file
-    # metrics_df = result.to_pandas()
-    #
-    # combined_df = pd.concat([df.reset_index(drop=True), metrics_df.reset_index(drop=True)], axis=1)
-    #
-    # excel_file = "evaluation.xlsx"
-    # combined_df.to_excel(excel_file, index=False)
-    # print(f"Combined evaluation results saved to '{excel_file}'.")
+    # optional: save the evaluation results to an Excel file
+
+    metrics_df = result.to_pandas()
+
+    combined_df = pd.concat([df.reset_index(drop=True), metrics_df.reset_index(drop=True)], axis=1)
+
+    excel_file = "evaluations.xlsx"
+    combined_df.to_excel(excel_file, index=False)
+    print(f"Combined evaluation results saved to '{excel_file}'.")
 
 if __name__ == "__main__":
     main()

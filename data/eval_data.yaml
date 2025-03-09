@@ -1,86 +1,81 @@
 - user_input: "What was Amazon’s net sales for 2019?"
-  expected_response: "Amazon’s net sales for 2019 were $280.5 billion."
+  expected_response: "Amazon's net sales for 2019 were $280,522 million."
 
 - user_input: "How many employees did Amazon have at the end of 2019?"
-  expected_response: "Amazon employed approximately 798,000 employees as of December 31, 2019."
+  expected_response: "Amazon employed approximately 798,000 full-time and part-time employees as of December 31, 2019."
 
 - user_input: "When was Amazon founded?"
   expected_response: "Amazon was founded in 1994."
 
 - user_input: "What was Amazon’s net income in 2019?"
-  expected_response: "Amazon’s net income in 2019 was $11.588 million."
+  expected_response: "Amazon's net income in 2019 was $11,588 million."
 
 - user_input: "How much did Amazon spend on technology and content in 2019?"
-  expected_response: "Amazon’s technology and content expenses were around $35.9 billion in 2019."
+  expected_response: "Amazon spent $35,931 million on technology and content in 2019."
 
 - user_input: "What was Amazon’s total long-term debt at the end of 2019?"
-  expected_response: "As of December 31, 2019, Amazon reported $23.4 billion in long-term debt."
+  expected_response: "The face value of Amazon's total long-term debt at the end of 2019 was $23,513 million."
 
 - user_input: "What were Amazon's total operating expenses in 2019?"
   expected_response: "Amazon's total operating expenses in 2019 were $265,981 million."
 
 - user_input: "Which segments contributed most to Amazon’s net sales in 2019?"
-  expected_response: "In 2019, the segments that contributed most to Amazon's net sales were online stores, third-party seller services, subscription services, AWS, and physical stores."
+  expected_response: "In 2019, the North America segment contributed the most to Amazon's net sales, with $170,773 million."
 
 - user_input: "What portion of net sales were from AWS in 2019?"
-  expected_response: "In 2019, AWS accounted approximately 12.5% of Amazon’s net sales."
+  expected_response: "In 2019, AWS accounted for 12% of the consolidated net sales."
 
 - user_input: "What are Amazon’s primary revenue streams?"
-  expected_response: "Amazon’s primarily revenue include retail sales, subscription services, third-party seller services, Service Sales, AWS."
+  expected_response: "Amazon's primary revenue streams include the sale of a wide range of products and services to customers. These include merchandise and content purchased for resale, products offered by third-party sellers, the manufacture and sale of electronic devices, and the production of media content. Additionally, Amazon offers services such as compute, storage, and database offerings, fulfillment, advertising, publishing, and digital content subscriptions."
 
 - user_input: "What was Amazon’s net cash provided by operating activities in 2019?"
-  expected_response: "Amazon’s net cash provided by operating activities in 2019 was $38,514 million."
+  expected_response: "The net cash provided by operating activities for Amazon in 2019 was $38.5 billion."
 
 - user_input: "How much did Amazon spend on marketing in 2019?"
-  expected_response: "Amazon spent $18.878 million on marketing in 2019."
-
-- user_input: "What is Amazon’s current ratio around the end of 2019?"
-  expected_response: "Amazon’s current ratio is approximately 1.10 at the end of 2019."
+  expected_response: "Amazon spent $18,878 million on marketing in 2019."
 
 - user_input: "What kind of assets does Amazon report as major?"
-  expected_response: "Amazon reports major assets include cash and cash equivalents, marketable securities, inventories, property and equipment."
+  expected_response: "Amazon reports major assets include cash and cash equivalents, marketable securities, inventories, accounts receivable, property and equipment, operating leases, goodwill and other assets."
 
 - user_input: "How much inventory did Amazon carry at the end of 2019?"
   expected_response: "Amazon’s inventories were $20,497 million at the end of 2019."
 
-- user_input: "What was Amazon’s gross profit in 2019? (net sales minus cost of sales)"
-  expected_response: "Amazon’s gross profit was $93 million in 2019."
-
 - user_input: "What are Amazon’s main long-term liabilities?"
-  expected_response: "Amazon's main long-term liabilities include deferred tax liabilities, financing obligations, asset retirement obligations, tax contingencies, operating lease liabilities."
+  expected_response: "Amazon's main long-term liabilities include long-term lease liabilities, long-term debt, and other long-term liabilities."
 
 - user_input: "How did Amazon’s operating income (EBIT) change from 2018 to 2019?"
-  expected_response: "Amazon's operating income increased from $12.4 million in 2018 to $14.5 million in 2019."
+  expected_response: "Amazon's operating income increased from $12.4 billion in 2018 to $14.5 billion in 2019."
 
 - user_input: "What was Amazon’s net product sales in 2019?"
-  expected_response: "Net product sales were around $160.408 million in 2019."
+  expected_response: "Amazon's net product sales in 2019 were $160,408 million."
 
 - user_input: "What was Amazon’s total interest expense in 2019?"
   expected_response: "Amazon’s total interest expense in 2019 was $1.6 billion."
 
 - user_input: "Which geographic segments does Amazon typically report in its statements?"
-  expected_response: "Amazon typically reports North America, International, and Amazon Web Services (AWS) as its three key geographic or operating segments."
+  expected_response: "AmazAmazon typically reports the following geographic segments in its statements: North America, International, and AWS (Amazon Web Services)."
 
 - user_input: "What was Amazon’s earnings per share (EPS) in 2019?"
-  expected_response: "Amazon's earnings per share (EPS) in 2019 was approximately $23.46."
+  expected_response: "The diluted earnings per share for Amazon in 2019 was $23.01."
+
 
 - user_input: "What was Amazon's free cash flow in 2019?"
   expected_response: "Amazon's free cash flow in 2019 was $25,825 million."
 
 - user_input: "What were Amazon's capital expenditures in 2019?"
-  expected_response: "Amazon's capital expenditures in 2019 were $12.7 billion."
+  expected_response: "Amazon's capital expenditures in 2019 were $16,861 million."
 
 - user_input: "What were Amazon’s cash equivalents and marketable fixed income securities at the end of 2019?"
-  expected_response: "At the end of 2019, Amazon's cash equivalents and marketable fixed income securities were $36,092 million and $18,929 million."
+  expected_response: "Amazon's cash equivalents and marketable fixed income securities at the end of 2019 were $45,359 million."
 
 - user_input: "How did Amazon's subscription services perform in 2019?"
-  expected_response: "In 2019, Amazon's subscription services generated net sales of $19,210 million, an increase from $14,168 million in 2018.."
+  expected_response: "Amazon's subscription services net sales in 2019 were $19,210 million."
 
 - user_input: "What were the primary risks mentioned in Amazon’s 2019 10-K filing?"
-  expected_response: "The primary risks mentioned in Amazon's 2019 10-K filing include: market competition, fluctuations in foreign exchange rates, changes in global economic conditions and customer spending, regulatory challenges, seasonality and technological risks."
+  expected_response: "The primary risks mentioned in Amazon's 2019 10-K filing include: Intense competition across various industries and geographies, which could impact Amazon's business operations and financial results. Risks related to the company's fulfillment network and inventory, particularly during periods of high demand, which could affect cash flow and operating results. Commercial agreements, strategic alliances, and other business relationships that may expose Amazon to various operational risks and affect the company's ability to maintain and develop these relationships. Risks related to adequately protecting Amazon's intellectual property rights and potential accusations of infringing on the intellectual property rights of third parties. System interruptions and lack of redundancy, which could make Amazon's websites and services unavailable or slow, potentially reducing sales and harming the company's reputation. Significant inventory risks that could adversely affect Amazon's operating results due to factors like seasonality, rapid changes in product cycles, and changes in consumer demand. Legal proceedings and claims that could result in financial liabilities and affect the company's reputation and financial condition."
 
 - user_input: "What percentage of Amazon’s net sales were generated from international operations in 2019?"
-  expected_response: "In 2019, approximately 26.6% of Amazon's net sales were generated from international operations in 2019."
+  expected_response: "The percentage of Amazon's net sales generated from international operations in 2019 was 27%."
 
 - user_input: "How did subscription services contribute to Amazon's revenue in 2019?"
   expected_response: "In 2019, subscription services contributed $19,210 million to Amazon's revenue."
@@ -92,22 +87,19 @@
   expected_response: "The percentage increase in Amazon's capital expenditures from 2018 to 2019 was approximately 12.39%."
 
 - user_input: "What percentage of Amazon’s total assets was comprised of cash and cash equivalents in 2019?"
-  expected_response: "In 2019, cash and cash equivalents comprised approximately 16.02% of Amazon's total assets."
-
-- user_input: "How did Amazon’s 2019 filing describe the competitive landscape in the e-commerce market?"
-  expected_response: "Amazon's 2019 filing described the competitive landscape in the e-commerce market as rapidly evolving and intensely competitive."
+  expected_response: "The percentage of total assets comprised of cash and cash equivalents in 2019 is approximately 16.02%."
 
 - user_input: "What was the impact of currency fluctuations on Amazon’s international revenue in 2019?"
   expected_response: "The impact of currency fluctuations on Amazon’s international revenue in 2019 was a decrease of $2.4 billion."
 
 - user_input: "What were the key growth drivers for Amazon’s international segment as described in the 2019 report?"
-  expected_response: "The key growth drivers for Amazon's international segment in 2019, as described in the report, were primarily increased unit sales, which included sales by third-party sellers."
+  expected_response: "The key growth drivers for Amazon's international segment in 2019 were increased unit sales, driven largely by efforts to reduce prices for customers, enhanced shipping offers, improved in-stock inventory availability, and an expanded selection of products."
 
 - user_input: "What were Amazon's total assets at the end of 2019?"
   expected_response: "At the end of 2019, Amazon's total assets were approximately $225.2 billion."
 
 - user_input: "What were the main regulatory challenges mentioned in Amazon's 2019 filing?"
-  expected_response: "The 2019 filing identified regulatory challenges such as increased scrutiny over data privacy, antitrust concerns, and evolving tax regulations, all of which posed potential risks to Amazon’s operations."
+  expected_response: "The main regulatory challenges mentioned in Amazon's 2019 filing include compliance with the U.S. Foreign Corrupt Practices Act and other applicable U.S. and foreign laws prohibiting corrupt payments, restrictions on foreign investment and operation in sectors like the Internet and retail in China and India, and the need to meet local ownership and cybersecurity requirements in these countries. Additionally, there are uncertainties regarding the interpretation of laws and regulations in China and India, which could impact Amazon's business operations and structures in these countries.."
 
 - user_input: "What supply chain risks were highlighted in Amazon’s 2019 filing?"
   expected_response: "The report identified several supply chain risks, including potential disruptions in global supply networks, rising logistics costs, and a reliance on third-party carriers for fulfillment."
@@ -119,10 +111,49 @@
   expected_response: "The 10-K divides Amazon’s operations into three segments: North America, International, and Amazon Web Services (AWS)."
 
 - user_input: "How does Amazon manage foreign exchange risk as noted in the 2019 filing?"
-  expected_response: "Amazon monitors currency fluctuations and implements risk management strategies to mitigate the impact of foreign exchange variations on its international operations."
+  expected_response: "Amazon manages foreign exchange risk by monitoring its foreign-denominated cash, cash equivalents, and marketable securities, as well as its intercompany balances denominated in various foreign currencies. The company assesses potential adverse changes in foreign exchange rates and estimates the impact these changes could have on the fair value of its foreign funds and the losses on its intercompany balances. Additionally, Amazon includes fluctuations in foreign exchange rates in its comprehensive income, and these are recorded in Accumulated other comprehensive income (loss), a separate component of stockholders’ equity. Changes in foreign exchange rates are also recognized in net income when they involve equity securities with readily determinable fair values."
 
 - user_input: "How are operating expenses categorized in Amazon's 2019 10-K?"
-  expected_response: "Operating expenses are categorized into cost of sales, fulfillment, technology and infrastructure, sales and marketing, and general and administrative expenses."
+  expected_response: "Operating expenses in Amazon's 2019 10-K are categorized as follows: Cost of sales: $165,536, Fulfillment: $40,232, Technology and content: $35,931, Marketing: $18,878, General and administrative: $5,203, Other operating expense (income), net: $201, Total operating expenses amounted to $265,981 million."
 
 - user_input: "How does the 2019 10-K describe Amazon's approach to legal proceedings?"
-  expected_response: "While Amazon is involved in various legal matters, the 10-K states that none of these proceedings are material to its overall operations."
+  expected_response: "The 2019 10-K describes Amazon's approach to legal proceedings by stating that the company disputes allegations of wrongdoing and intends to defend itself vigorously in these matters. This approach is reflected in several specific legal cases mentioned, where Amazon consistently disputes the claims against it and expresses its intention to vigorously defend itself."
+
+- user_input: "What are Amazon's core guiding principles as described in the 2019 10-K?"
+  expected_response: "Amazon's core guiding principles, as described in the 2019 10-K, include customer obsession rather than competitor focus, passion for invention, commitment to operational excellence, and long-term thinking."
+
+- user_input: "Who is the CEO of Amazon Web Services as mentioned in the 2019 10-K?"
+  expected_response: "The CEO of Amazon Web Services as mentioned in the 2019 10-K is Andrew R. Jassy."
+
+- user_input: "How many physical Amazon stores were there as of December 31, 2019?"
+  expected_response: "There were 564 North America and 7 International physical Amazon stores as of December 31, 2019."
+
+- user_input: "What was the total leased square footage of Amazon's facilities as of December 31, 2019?"
+  expected_response: "Amazon operated approximately 318,171 thousand square feet (about 318 million square feet) of leased space as of December 31, 2019."
+
+- user_input: "What was the total owned square footage of Amazon's facilities as of December 31, 2019?"
+  expected_response: "The total owned square footage of Amazon's facilities as of December 31, 2019, was 15,615."
+
+- user_input: "Which acquisition was included in Amazon's consolidated financial statements starting in 2017?"
+  expected_response: "The acquisition of Whole Foods Market, Inc., completed on August 28, 2017, was included in Amazon's consolidated financial statements."
+
+- user_input: "What is the address of Amazon's principal executive offices as provided in the 2019 10-K?"
+  expected_response: "Amazon's principal executive offices address is 410 Terry Avenue North, Seattle, Washington 98109-5210."
+
+- user_input: "On which stock exchange is Amazon's common stock traded, and what is its trading symbol?"
+  expected_response: "Amazon's common stock is traded on the Nasdaq Global Select Market under the symbol 'AMZN.'"
+
+- user_input: "How many shareholders of record did Amazon have as of January 22, 2020, according to the 2019 10-K?"
+  expected_response: "As of January 22, 2020, Amazon had 3,169 shareholders of record of their common stock."
+
+- user_input: "What was the aggregate market value of voting stock held by non-affiliates as of June 30, 2019?"
+  expected_response: "The aggregate market value of voting stock held by non-affiliates was approximately $786.3 billion as of June 30, 2019."
+
+- user_input: "What percentage of Amazon's annual revenue was recognized in the fourth quarter of 2019?"
+  expected_response: "Approximately 31% of Amazon's annual revenue was recognized during the fourth quarter of 2019."
+
+- user_input: "What are some of the electronic devices that Amazon manufactures and sells, as mentioned in the 2019 10-K?"
+  expected_response: "Amazon manufactures and sells devices such as the Kindle, Fire tablet, Fire TV, Echo, and Ring."
+
+- user_input: "What is Amazon's investor relations website as noted in the 2019 10-K?"
+  expected_response: "Amazon's investor relations website is amazon.com/ir."
